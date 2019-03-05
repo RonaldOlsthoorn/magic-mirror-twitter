@@ -13,7 +13,8 @@ config = data["config"]
 
 api = twitter.Api(consumer_key=config["credentials"]["key"],
                   consumer_secret=config["credentials"]["secret"],
-                  application_only_auth=True)
+                  application_only_auth=True,
+                  tweet_mode='extended')
 
 
 @app.route('/tweets.json')
@@ -27,7 +28,7 @@ def tweets():
             term=config["specifics"]['query'],
             count=config["specifics"]["count"])
 
-    texts = {"tweets": [{"id": tweet.id, "text": tweet.text} for tweet in tweets]}
+    texts = {"tweets": [{"id": tweet.id, "text": tweet.full_text} for tweet in tweets]}
     return jsonify(texts)
 
 
